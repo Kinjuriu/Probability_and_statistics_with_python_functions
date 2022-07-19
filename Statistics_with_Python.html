@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Statistics with Python</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<h1 id="probability-and-statistics-experiments-with-python">Probability and Statistics Experiments with Python</h1>
+<blockquote>
+<p>by Thom Ives, Ph.D.</p>
+</blockquote>
+<p>Find this on DagsHub too. On DagsHub, I am ThomIves, and this repo is “Probability_and_Statistics_with_Python”.</p>
+<p>What is the motivation for such an approach? The approach of coding math from scratch without libraries or modules? I like the way my dear friend and brother Manjunatha Gummaraju says it best.</p>
+<blockquote>
+<p>“Hand crafting (without libraries &amp; automation) helps to get a firm grip on the subject, nuances &amp; its applications. It also helps probably to author new innovative techniques from the ground up.”</p>
+</blockquote>
+<h1 id="calculating-sample-mean-and-standard-deviation">Calculating (Sample) Mean and Standard Deviation</h1>
+<p><br /><span class="math display">$$ \mu = \frac {\sum x_i} {n}\;\;\;\; \sigma = \sqrt {\frac {\sum (x_i - \mu)^2} {n} } $$</span><br /></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">def</span> mean(X):</a>
+<a class="sourceLine" id="cb1-2" title="2">    mu <span class="op">=</span> <span class="bu">sum</span>(X) <span class="op">/</span> <span class="bu">len</span>(X)</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="cf">return</span> mu</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">def</span> standard_deviation(X, mu<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="cf">if</span> <span class="kw">not</span> mu:</a>
+<a class="sourceLine" id="cb2-3" title="3">        mu <span class="op">=</span> mean(X)</a>
+<a class="sourceLine" id="cb2-4" title="4">    sigma <span class="op">=</span> (<span class="bu">sum</span>([(x <span class="op">-</span> mu)<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> X])<span class="op">/</span><span class="bu">len</span>(X))<span class="op">**</span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="cf">return</span> sigma</a></code></pre></div>
+<h1 id="normal-probability-distribution-function">Normal Probability Distribution Function</h1>
+<h2 id="p-e--2">$ p =  e^{-  ( )^2}$</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb3-5" title="5">    <span class="co"># define e and pi explicitly</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    e <span class="op">=</span> <span class="fl">2.718281828</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    pi <span class="op">=</span> <span class="fl">3.1415927</span></a>
+<a class="sourceLine" id="cb3-8" title="8">    <span class="co"># calculate in two steps</span></a>
+<a class="sourceLine" id="cb3-9" title="9">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb3-10" title="10">    p <span class="op">*=</span> e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb3-11" title="11"> </a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15">X <span class="op">=</span> [(x <span class="op">-</span> <span class="dv">1000</span>)<span class="op">/</span><span class="dv">200</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2001</span>))]</a>
+<a class="sourceLine" id="cb3-16" title="16">P <span class="op">=</span> [PDF(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb3-17" title="17">plt.plot(X, P)</a>
+<a class="sourceLine" id="cb3-18" title="18">plt.title(label<span class="op">=</span><span class="st">&quot;Standard Normal Distribution&quot;</span>)</a>
+<a class="sourceLine" id="cb3-19" title="19">plt.xlabel(xlabel<span class="op">=</span><span class="st">&quot;value&quot;</span>)</a>
+<a class="sourceLine" id="cb3-20" title="20">plt.ylabel(ylabel<span class="op">=</span><span class="st">&quot;propability of value occurance&quot;</span>)</a>
+<a class="sourceLine" id="cb3-21" title="21">plt.show()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_6_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h1 id="cummulative-normal-distribution-function">Cummulative Normal Distribution Function</h1>
+<p><br /><span class="math display">$$ cdf = \int_{x_{left}}^{x_{right}} {\frac {1}{\sigma \sqrt {2 \pi}} e^{- \frac{1}{2} \left( \frac {x - \mu}{ \sigma }\right)^2}}$$</span><br /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="co"># define e and pi explicitly</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    e <span class="op">=</span> <span class="fl">2.718281828</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    pi <span class="op">=</span> <span class="fl">3.1415927</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="co"># calculate in two steps</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb4-10" title="10">    p <span class="op">*=</span> e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb4-11" title="11"> </a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb4-13" title="13"></a>
+<a class="sourceLine" id="cb4-14" title="14"></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="kw">def</span> CDF(mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>, x_left<span class="op">=-</span><span class="dv">5</span>, x_right<span class="op">=</span><span class="dv">5</span>, width<span class="op">=</span><span class="fl">0.0001</span>):</a>
+<a class="sourceLine" id="cb4-16" title="16">    CDF <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    X <span class="op">=</span> []  <span class="co"># for plotting only</span></a>
+<a class="sourceLine" id="cb4-18" title="18">    CDF_y <span class="op">=</span> []  <span class="co"># for plotting only</span></a>
+<a class="sourceLine" id="cb4-19" title="19"> </a>
+<a class="sourceLine" id="cb4-20" title="20">    x <span class="op">=</span> x_left <span class="op">+</span> width <span class="op">/</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-21" title="21">    <span class="cf">while</span> x <span class="op">&lt;</span> x_right:</a>
+<a class="sourceLine" id="cb4-22" title="22">        X.append(x)  <span class="co"># for plotting only</span></a>
+<a class="sourceLine" id="cb4-23" title="23">        panel <span class="op">=</span> PDF(x, mean, std_dev) <span class="op">*</span> width  <span class="co"># panel under PDF</span></a>
+<a class="sourceLine" id="cb4-24" title="24">        CDF <span class="op">+=</span> panel  <span class="co"># running sum of panels = integration</span></a>
+<a class="sourceLine" id="cb4-25" title="25">        CDF_y.append(CDF)  <span class="co"># for plotting only</span></a>
+<a class="sourceLine" id="cb4-26" title="26">        x <span class="op">+=</span> width  <span class="co"># current x value</span></a>
+<a class="sourceLine" id="cb4-27" title="27">       </a>
+<a class="sourceLine" id="cb4-28" title="28">    <span class="cf">return</span> CDF, X, CDF_y</a>
+<a class="sourceLine" id="cb4-29" title="29"></a>
+<a class="sourceLine" id="cb4-30" title="30"></a>
+<a class="sourceLine" id="cb4-31" title="31">total_integral, X, CDF_y <span class="op">=</span> CDF()</a>
+<a class="sourceLine" id="cb4-32" title="32">P <span class="op">=</span> [PDF(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb4-33" title="33">total_integral <span class="op">=</span> <span class="bu">round</span>(total_integral, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb4-34" title="34">msg <span class="op">=</span> <span class="ss">f&#39;Total integral of PDF = </span><span class="sc">{</span>total_integral<span class="sc">}</span><span class="ss">&#39;</span></a>
+<a class="sourceLine" id="cb4-35" title="35"><span class="bu">print</span>(msg)</a>
+<a class="sourceLine" id="cb4-36" title="36">plt.plot(X, P)</a>
+<a class="sourceLine" id="cb4-37" title="37">plt.plot(X, CDF_y)</a>
+<a class="sourceLine" id="cb4-38" title="38">plt.show()</a></code></pre></div>
+<pre><code>Total integral of PDF = 1.0</code></pre>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_8_1.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h1 id="the-beta-distribution">The Beta Distribution</h1>
+<p><br /><span class="math display">$$ f(x, \alpha, \beta) = \frac {1} {B(\alpha, \beta)} \; x^{\alpha - 1} \; (1 - x)^{\beta - 1} $$</span><br /></p>
+<p><br /><span class="math display"><em>B</em>(<em>α</em>, <em>β</em>) = ∫<sub>0</sub><sup>1</sup><em>t</em><sup><em>α</em> − 1</sup>(1 − <em>t</em>)<sup><em>β</em> − 1</sup><em>d</em><em>t</em></span><br /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">class</span> Beta_Distribution:</a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, alpha, beta, panels<span class="op">=</span><span class="dv">10000</span>):</a>
+<a class="sourceLine" id="cb6-5" title="5">        <span class="va">self</span>.alpha <span class="op">=</span> alpha</a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="va">self</span>.beta <span class="op">=</span> beta</a>
+<a class="sourceLine" id="cb6-7" title="7">        <span class="va">self</span>.panels <span class="op">=</span> panels</a>
+<a class="sourceLine" id="cb6-8" title="8">        <span class="va">self</span>.__Beta_Function__()</a>
+<a class="sourceLine" id="cb6-9" title="9">        </a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="kw">def</span> __Beta_Function__(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb6-11" title="11">        width <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="va">self</span>.panels</a>
+<a class="sourceLine" id="cb6-12" title="12">        X <span class="op">=</span> [x<span class="op">/</span><span class="va">self</span>.panels <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.panels)]</a>
+<a class="sourceLine" id="cb6-13" title="13">        <span class="co"># makes total integral of beta_PDF sum to 1</span></a>
+<a class="sourceLine" id="cb6-14" title="14">        <span class="va">self</span>.B <span class="op">=</span> <span class="bu">sum</span>(</a>
+<a class="sourceLine" id="cb6-15" title="15">            [(x<span class="op">**</span>(<span class="va">self</span>.alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb6-16" title="16">             (<span class="dv">1</span> <span class="op">-</span> x)<span class="op">**</span>(<span class="va">self</span>.beta <span class="op">-</span> <span class="dv">1</span>)) <span class="op">*</span> width</a>
+<a class="sourceLine" id="cb6-17" title="17">             <span class="cf">for</span> x <span class="kw">in</span> X])</a>
+<a class="sourceLine" id="cb6-18" title="18">    </a>
+<a class="sourceLine" id="cb6-19" title="19">    <span class="kw">def</span> beta_PDF(<span class="va">self</span>, x):</a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="cf">return</span> x<span class="op">**</span>(<span class="va">self</span>.alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb6-21" title="21">               (<span class="dv">1</span> <span class="op">-</span> x)<span class="op">**</span>(<span class="va">self</span>.beta <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> <span class="va">self</span>.B</a>
+<a class="sourceLine" id="cb6-22" title="22"></a>
+<a class="sourceLine" id="cb6-23" title="23"></a>
+<a class="sourceLine" id="cb6-24" title="24">X <span class="op">=</span> [x<span class="op">/</span><span class="dv">1000</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span><span class="op">+</span><span class="dv">1</span>)]</a>
+<a class="sourceLine" id="cb6-25" title="25">bd <span class="op">=</span> Beta_Distribution(<span class="dv">5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb6-26" title="26">Y1 <span class="op">=</span> [bd.beta_PDF(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb6-27" title="27">Y_integral <span class="op">=</span> <span class="bu">round</span>(<span class="bu">sum</span>([y<span class="op">*</span><span class="fl">0.001</span> <span class="cf">for</span> y <span class="kw">in</span> Y1]), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb6-28" title="28">bd <span class="op">=</span> Beta_Distribution(<span class="dv">2</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb6-29" title="29">Y2 <span class="op">=</span> [bd.beta_PDF(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb6-30" title="30"></a>
+<a class="sourceLine" id="cb6-31" title="31"><span class="bu">print</span>(<span class="ss">f&quot;The total integral of beta_PDF is </span><span class="sc">{</span>Y_integral<span class="sc">}</span><span class="ss">&quot;</span>)</a>
+<a class="sourceLine" id="cb6-32" title="32">plt.plot(X, Y1)</a>
+<a class="sourceLine" id="cb6-33" title="33">plt.plot(X, Y2)</a>
+<a class="sourceLine" id="cb6-34" title="34">plt.title(label<span class="op">=</span><span class="st">&quot;Skewed Distribution&quot;</span>)</a>
+<a class="sourceLine" id="cb6-35" title="35">plt.xlabel(xlabel<span class="op">=</span><span class="st">&quot;values&quot;</span>)</a>
+<a class="sourceLine" id="cb6-36" title="36">plt.ylabel(ylabel<span class="op">=</span><span class="st">&quot;probabilities&quot;</span>)</a>
+<a class="sourceLine" id="cb6-37" title="37">plt.show()</a></code></pre></div>
+<pre><code>The total integral of beta_PDF is 1.0</code></pre>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_10_1.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h1 id="students-t-distribution">Student’s T-Distribution</h1>
+<p><br /><span class="math display"><em>B</em>(<em>α</em>, <em>β</em>) = ∫<sub>0</sub><sup>1</sup><em>t</em><sup><em>α</em> − 1</sup>(1 − <em>t</em>)<sup><em>β</em> − 1</sup></span><br /></p>
+<p><br /><span class="math display">$$ PDF_t(t) = \frac {1} {\sqrt {\nu} B( \frac {1}{2}, \frac {\nu}{2})} \left( 1 + \frac {t^2}{\nu} \right) ^ {- \frac {\nu + 1}{2}} $$</span><br /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">class</span> T_Distribution:</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, dof<span class="op">=</span><span class="dv">9</span>):</a>
+<a class="sourceLine" id="cb8-3" title="3">        <span class="va">self</span>.beta <span class="op">=</span> <span class="va">self</span>.beta_function(<span class="fl">0.5</span>, dof<span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5">        <span class="va">self</span>.front <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (dof <span class="op">**</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="va">self</span>.beta)</a>
+<a class="sourceLine" id="cb8-6" title="6">        <span class="va">self</span>.dof <span class="op">=</span> dof</a>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="va">self</span>.power <span class="op">=</span> <span class="op">-</span>(dof <span class="op">+</span> <span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb8-8" title="8"></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="kw">def</span> beta_function(<span class="va">self</span>, x, y):</a>
+<a class="sourceLine" id="cb8-10" title="10">      pw <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">1000000</span></a>
+<a class="sourceLine" id="cb8-11" title="11">      beta <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      t <span class="op">=</span> pw <span class="op">/</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb8-13" title="13">      <span class="cf">while</span> t <span class="op">&lt;</span> <span class="fl">1.0</span>:</a>
+<a class="sourceLine" id="cb8-14" title="14">          beta <span class="op">+=</span> t <span class="op">**</span> (x <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> t) <span class="op">**</span> (y <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> pw</a>
+<a class="sourceLine" id="cb8-15" title="15">          t <span class="op">+=</span> pw</a>
+<a class="sourceLine" id="cb8-16" title="16">  </a>
+<a class="sourceLine" id="cb8-17" title="17">      <span class="cf">return</span> beta</a>
+<a class="sourceLine" id="cb8-18" title="18">  </a>
+<a class="sourceLine" id="cb8-19" title="19">    <span class="kw">def</span> PDFt(<span class="va">self</span>, t):</a>
+<a class="sourceLine" id="cb8-20" title="20">        <span class="co"># The t probability distribution method</span></a>
+<a class="sourceLine" id="cb8-21" title="21">        f_of_t <span class="op">=</span> <span class="va">self</span>.front <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="va">self</span>.dof) <span class="op">**</span> <span class="va">self</span>.power</a>
+<a class="sourceLine" id="cb8-22" title="22"></a>
+<a class="sourceLine" id="cb8-23" title="23">        <span class="cf">return</span> f_of_t</a>
+<a class="sourceLine" id="cb8-24" title="24"></a>
+<a class="sourceLine" id="cb8-25" title="25">    <span class="kw">def</span> CDFt(<span class="va">self</span>, t_left, t_right): </a>
+<a class="sourceLine" id="cb8-26" title="26">        <span class="co"># The t cummulative distribution method</span></a>
+<a class="sourceLine" id="cb8-27" title="27">        <span class="co"># We simply numerically integrate under the PDFt curve</span></a>
+<a class="sourceLine" id="cb8-28" title="28">        panels <span class="op">=</span> <span class="va">self</span>.dof <span class="op">*</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb8-29" title="29">        width <span class="op">=</span> (t_right <span class="op">-</span> t_left) <span class="op">/</span> panels</a>
+<a class="sourceLine" id="cb8-30" title="30">        cdf <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-31" title="31">        t <span class="op">=</span> t_left</a>
+<a class="sourceLine" id="cb8-32" title="32">        prob <span class="op">=</span> <span class="va">self</span>.PDFt(t)</a>
+<a class="sourceLine" id="cb8-33" title="33">        <span class="co"># print(panels, width, prob)</span></a>
+<a class="sourceLine" id="cb8-34" title="34">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(panels):</a>
+<a class="sourceLine" id="cb8-35" title="35">            t <span class="op">+=</span> i <span class="op">*</span> width</a>
+<a class="sourceLine" id="cb8-36" title="36">            prob <span class="op">=</span> <span class="va">self</span>.PDFt(t)</a>
+<a class="sourceLine" id="cb8-37" title="37">            cdf <span class="op">+=</span> prob <span class="op">*</span> width</a>
+<a class="sourceLine" id="cb8-38" title="38"></a>
+<a class="sourceLine" id="cb8-39" title="39">        <span class="cf">return</span> cdf</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="co"># define e and pi explicitly</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    e <span class="op">=</span> <span class="fl">2.718281828</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    pi <span class="op">=</span> <span class="fl">3.1415927</span></a>
+<a class="sourceLine" id="cb9-8" title="8">    <span class="co"># calculate in two steps</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb9-10" title="10">    p <span class="op">*=</span> e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb9-11" title="11"> </a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14"></a>
+<a class="sourceLine" id="cb9-15" title="15">X <span class="op">=</span> [(x <span class="op">-</span> <span class="dv">1000</span>)<span class="op">/</span><span class="dv">250</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2001</span>))]</a>
+<a class="sourceLine" id="cb9-16" title="16">P <span class="op">=</span> [PDF(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb9-17" title="17">plt.plot(X, P)</a>
+<a class="sourceLine" id="cb9-18" title="18"><span class="cf">for</span> dof <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">30</span>]:</a>
+<a class="sourceLine" id="cb9-19" title="19">    t_dist <span class="op">=</span> T_Distribution(dof<span class="op">=</span>dof)</a>
+<a class="sourceLine" id="cb9-20" title="20">    TP <span class="op">=</span> [t_dist.PDFt(x) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb9-21" title="21">    plt.plot(X, TP)</a>
+<a class="sourceLine" id="cb9-22" title="22"></a>
+<a class="sourceLine" id="cb9-23" title="23">plt.title(label<span class="op">=</span><span class="st">&quot;Test Distribution&quot;</span>)</a>
+<a class="sourceLine" id="cb9-24" title="24">plt.xlabel(xlabel<span class="op">=</span><span class="st">&quot;value&quot;</span>)</a>
+<a class="sourceLine" id="cb9-25" title="25">plt.ylabel(ylabel<span class="op">=</span><span class="st">&quot;propability of value occurance&quot;</span>)</a>
+<a class="sourceLine" id="cb9-26" title="26">plt.show()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_13_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h2 id="basic-determination-of-significance-value">Basic Determination Of Significance Value</h2>
+<p>A Khan Academy Problem</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">X <span class="op">=</span> [<span class="dv">80</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+</span> [<span class="fl">82.5</span>]<span class="op">*</span><span class="dv">24</span> <span class="op">+</span> [<span class="dv">85</span>]<span class="op">*</span><span class="dv">72</span> <span class="op">+</span> [<span class="fl">87.5</span>]<span class="op">*</span><span class="dv">181</span> <span class="op">+</span> [<span class="dv">90</span>]<span class="op">*</span><span class="dv">281</span> <span class="op">+</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb10-2" title="2">    [<span class="fl">92.5</span>]<span class="op">*</span><span class="dv">272</span> <span class="op">+</span> [<span class="dv">95</span>]<span class="op">*</span><span class="dv">136</span> <span class="op">+</span> [<span class="fl">97.5</span>]<span class="op">*</span><span class="dv">27</span> <span class="op">+</span> [<span class="dv">100</span>]<span class="op">*</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4">mu <span class="op">=</span> mean(X)</a>
+<a class="sourceLine" id="cb10-5" title="5">std <span class="op">=</span> standard_deviation(X, mu<span class="op">=</span>mu)</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="bu">print</span>(mu, std)</a></code></pre></div>
+<pre><code>90.54 3.362796455332963</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">the_85_and_less <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> X <span class="cf">if</span> x <span class="op">&lt;=</span> <span class="dv">85</span>]</a>
+<a class="sourceLine" id="cb12-2" title="2">percentage_LE_85 <span class="op">=</span> <span class="bu">len</span>(the_85_and_less)<span class="op">/</span><span class="bu">len</span>(X)</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="bu">print</span>(percentage_LE_85)</a></code></pre></div>
+<pre><code>0.101</code></pre>
+<h1 id="basic-centerpoint-integration">Basic Centerpoint Integration</h1>
+<p>We start t at <span class="math inline">$\frac {w}{2}$</span> to use centerpoints for each panel.</p>
+<p>There are other methods of numerical integration.</p>
+<p>Centerpoint is pretty good at balancing areas above</p>
+<p>and below the function being integrated.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4">w <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb14-5" title="5">f_of_t <span class="op">=</span> math.sin</a>
+<a class="sourceLine" id="cb14-6" title="6"></a>
+<a class="sourceLine" id="cb14-7" title="7">T <span class="op">=</span> [w<span class="op">/</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb14-8" title="8">S <span class="op">=</span> [<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb14-9" title="9">C <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):</a>
+<a class="sourceLine" id="cb14-11" title="11">    T.append(T[<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> w)  <span class="co"># Our time step</span></a>
+<a class="sourceLine" id="cb14-12" title="12">    S.append(f_of_t(t<span class="op">*</span>w))  <span class="co"># Our Function</span></a>
+<a class="sourceLine" id="cb14-13" title="13">    C.append(f_of_t(t<span class="op">*</span>w)<span class="op">*</span>w <span class="op">+</span> C[<span class="op">-</span><span class="dv">1</span>])  <span class="co"># Integrating</span></a>
+<a class="sourceLine" id="cb14-14" title="14"></a>
+<a class="sourceLine" id="cb14-15" title="15">plt.plot(T, S)</a>
+<a class="sourceLine" id="cb14-16" title="16">plt.plot(T, C)</a>
+<a class="sourceLine" id="cb14-17" title="17">plt.show()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_18_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h1 id="null-and-alternate-hypotheses-distributions-with-dynamic-significance-level">Null And Alternate Hypotheses Distributions With Dynamic Significance Level</h1>
+<p>For the LaTeX in MatPlotLib Inside Colab, See: https://stackoverflow.com/a/62075348/996205</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1"><span class="im">import</span> matplotlib</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="im">from</span> matplotlib <span class="im">import</span> rc</a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="op">%</span>matplotlib inline</a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6">rc(<span class="st">&#39;text&#39;</span>, usetex<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb15-7" title="7">matplotlib.rcParams[<span class="st">&#39;text.latex.preamble&#39;</span>] <span class="op">=</span> [<span class="vs">r&#39;\usepackage</span><span class="sc">{amsmath}</span><span class="vs">&#39;</span>]</a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="op">!</span>apt install texlive<span class="op">-</span>fonts<span class="op">-</span>recommended texlive<span class="op">-</span>fonts<span class="op">-</span>extra cm<span class="op">-</span><span class="bu">super</span> dvipng</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb16-6" title="6">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb16-7" title="7">    p <span class="op">*=</span> math.e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb16-8" title="8">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10">pw <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb16-11" title="11">X <span class="op">=</span> [(x <span class="op">+</span> <span class="fl">0.5</span>)<span class="op">*</span>pw <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22000</span>)]</a>
+<a class="sourceLine" id="cb16-12" title="12">P1 <span class="op">=</span> [PDF(x, <span class="dv">8</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb16-13" title="13">P2 <span class="op">=</span> [PDF(x, <span class="dv">14</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb16-14" title="14"></a>
+<a class="sourceLine" id="cb16-15" title="15">C1 <span class="op">=</span> []  <span class="co"># C2 = []</span></a>
+<a class="sourceLine" id="cb16-16" title="16">sum1 <span class="op">=</span> <span class="dv">0</span>  <span class="co"># sum2 = 0</span></a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb16-18" title="18">    sum1 <span class="op">+=</span> P1[i]<span class="op">*</span>pw  <span class="co"># sum2 += P2[i]*pw</span></a>
+<a class="sourceLine" id="cb16-19" title="19">    C1.append(sum1)  <span class="co"># C2.append(sum2)</span></a>
+<a class="sourceLine" id="cb16-20" title="20"></a>
+<a class="sourceLine" id="cb16-21" title="21">SigLevels <span class="op">=</span> [(v<span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">90</span>)<span class="op">/</span><span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">17</span>)]</a>
+<a class="sourceLine" id="cb16-22" title="22">SigLevels <span class="op">=</span> [<span class="fl">0.975</span>]</a>
+<a class="sourceLine" id="cb16-23" title="23"></a>
+<a class="sourceLine" id="cb16-24" title="24"><span class="cf">for</span> sl <span class="kw">in</span> SigLevels:</a>
+<a class="sourceLine" id="cb16-25" title="25">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb16-26" title="26">        <span class="cf">if</span> C1[i] <span class="op">&gt;</span> sl:</a>
+<a class="sourceLine" id="cb16-27" title="27">            sig_i <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb16-28" title="28">            <span class="cf">break</span></a>
+<a class="sourceLine" id="cb16-29" title="29"></a>
+<a class="sourceLine" id="cb16-30" title="30">    plt.figure(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb16-31" title="31">    plt.plot(X, P1)</a>
+<a class="sourceLine" id="cb16-32" title="32">    plt.plot(X, P2)</a>
+<a class="sourceLine" id="cb16-33" title="33"></a>
+<a class="sourceLine" id="cb16-34" title="34">    plt.title(</a>
+<a class="sourceLine" id="cb16-35" title="35">        label<span class="op">=</span><span class="st">&quot;Distributions For Null And Alternative Hypotheses&quot;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb16-36" title="36">    plt.xlabel(xlabel<span class="op">=</span><span class="st">&quot;Values&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb16-37" title="37">    plt.ylabel(ylabel<span class="op">=</span><span class="st">&quot;Probability of Occurance&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb16-38" title="38"></a>
+<a class="sourceLine" id="cb16-39" title="39">    plt.fill_between(X[sig_i:], <span class="dv">0</span>, P1[sig_i:], facecolor<span class="op">=</span><span class="st">&#39;green&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb16-40" title="40">    plt.fill_between(X[:sig_i], <span class="dv">0</span>, P2[:sig_i], facecolor<span class="op">=</span><span class="st">&#39;orange&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb16-41" title="41"></a>
+<a class="sourceLine" id="cb16-42" title="42">    plt.text(<span class="dv">8</span>, <span class="fl">0.13</span>, <span class="st">&#39;NULL&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-43" title="43">    plt.text(<span class="dv">14</span>, <span class="fl">0.13</span>, <span class="st">&#39;ALT&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-44" title="44"></a>
+<a class="sourceLine" id="cb16-45" title="45">    plt.text(<span class="dv">8</span>, <span class="fl">0.06</span>, <span class="st">&#39;True</span><span class="ch">\n</span><span class="st">Negative&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-46" title="46">    plt.text(<span class="dv">14</span>, <span class="fl">0.06</span>, <span class="st">&#39;True</span><span class="ch">\n</span><span class="st">Positive&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-47" title="47"></a>
+<a class="sourceLine" id="cb16-48" title="48">    plt.text(<span class="dv">1</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\beta$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false negative&#39;</span>,</a>
+<a class="sourceLine" id="cb16-49" title="49">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb16-50" title="50">    plt.text(<span class="dv">18</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\alpha$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false positive&#39;</span>,</a>
+<a class="sourceLine" id="cb16-51" title="51">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb16-52" title="52">    this_text <span class="op">=</span> <span class="ss">f&#39;significance</span><span class="ch">\n</span><span class="ss">level = </span><span class="sc">{</span><span class="bu">round</span>(sl, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">&#39;</span></a>
+<a class="sourceLine" id="cb16-53" title="53">    plt.text(<span class="dv">18</span>, <span class="fl">0.10</span>, this_text,</a>
+<a class="sourceLine" id="cb16-54" title="54">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb16-55" title="55"></a>
+<a class="sourceLine" id="cb16-56" title="56">    plt.text(<span class="dv">8</span>, <span class="fl">0.1</span>, <span class="vs">r&#39;$1 - \alpha$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-57" title="57">    plt.text(<span class="dv">14</span>, <span class="fl">0.1</span>, <span class="vs">r&#39;$1 - \beta$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb16-58" title="58"></a>
+<a class="sourceLine" id="cb16-59" title="59">    plt.text(X[sig_i] <span class="op">+</span> <span class="fl">0.25</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\alpha$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb16-60" title="60">    plt.text(X[sig_i] <span class="op">-</span> <span class="fl">0.75</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\beta$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb16-61" title="61"></a>
+<a class="sourceLine" id="cb16-62" title="62">    plt.savefig(<span class="ss">f&#39;hypo_</span><span class="sc">{</span><span class="bu">round</span>(sl, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">.png&#39;</span>)</a>
+<a class="sourceLine" id="cb16-63" title="63">    plt.show()</a>
+<a class="sourceLine" id="cb16-64" title="64">    time.sleep(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb16-65" title="65">    plt.figure().clear()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_22_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<pre><code>&lt;Figure size 432x288 with 0 Axes&gt;</code></pre>
+<h1 id="null-and-alternate-hypotheses-distributions-with-dynamic-alternative-mean">Null And Alternate Hypotheses Distributions With Dynamic Alternative Mean</h1>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb18-4" title="4"></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="kw">def</span> PDF(x, mean_<span class="op">=</span><span class="dv">0</span>, std_dev_<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb18-6" title="6">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev_ <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb18-7" title="7">    p <span class="op">*=</span> math.e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean_)<span class="op">/</span>std_dev_)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb18-8" title="8">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb18-9" title="9"></a>
+<a class="sourceLine" id="cb18-10" title="10">pw <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb18-11" title="11">X <span class="op">=</span> [(x <span class="op">+</span> <span class="fl">0.5</span>)<span class="op">*</span>pw <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22000</span>)]</a>
+<a class="sourceLine" id="cb18-12" title="12">P1 <span class="op">=</span> [PDF(x, <span class="dv">8</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb18-13" title="13"></a>
+<a class="sourceLine" id="cb18-14" title="14">C1 <span class="op">=</span> []  <span class="co"># C2 = []</span></a>
+<a class="sourceLine" id="cb18-15" title="15">sum1 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-16" title="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb18-17" title="17">    sum1 <span class="op">+=</span> P1[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb18-18" title="18">    C1.append(sum1)</a>
+<a class="sourceLine" id="cb18-19" title="19"></a>
+<a class="sourceLine" id="cb18-20" title="20">sig_level <span class="op">=</span> <span class="fl">0.975</span></a>
+<a class="sourceLine" id="cb18-21" title="21"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb18-22" title="22">    <span class="cf">if</span> C1[i] <span class="op">&gt;</span> sig_level:</a>
+<a class="sourceLine" id="cb18-23" title="23">        sig_i <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb18-24" title="24">        <span class="cf">break</span></a>
+<a class="sourceLine" id="cb18-25" title="25"></a>
+<a class="sourceLine" id="cb18-26" title="26"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">19</span>):</a>
+<a class="sourceLine" id="cb18-27" title="27">    mu_alt <span class="op">=</span> <span class="fl">12.4</span> <span class="op">+</span> i <span class="op">*</span> <span class="fl">0.2</span></a>
+<a class="sourceLine" id="cb18-28" title="28">    mu_alt <span class="op">=</span> <span class="bu">round</span>(mu_alt, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb18-29" title="29"></a>
+<a class="sourceLine" id="cb18-30" title="30">    P2 <span class="op">=</span> [PDF(x, mu_alt, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb18-31" title="31">    plt.figure(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb18-32" title="32">    plt.plot(X, P1)</a>
+<a class="sourceLine" id="cb18-33" title="33">    plt.plot(X, P2)</a>
+<a class="sourceLine" id="cb18-34" title="34"></a>
+<a class="sourceLine" id="cb18-35" title="35">    plt.title(</a>
+<a class="sourceLine" id="cb18-36" title="36">        label<span class="op">=</span><span class="st">&quot;Distributions For Null And Alternative Hypotheses&quot;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb18-37" title="37">    plt.xlabel(xlabel<span class="op">=</span><span class="st">&quot;Values&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb18-38" title="38">    plt.ylabel(ylabel<span class="op">=</span><span class="st">&quot;Probability of Occurance&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb18-39" title="39"></a>
+<a class="sourceLine" id="cb18-40" title="40">    plt.fill_between(X[sig_i:], <span class="dv">0</span>, P1[sig_i:], facecolor<span class="op">=</span><span class="st">&#39;green&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb18-41" title="41">    plt.fill_between(X[:sig_i], <span class="dv">0</span>, P2[:sig_i], facecolor<span class="op">=</span><span class="st">&#39;orange&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb18-42" title="42"></a>
+<a class="sourceLine" id="cb18-43" title="43">    plt.text(<span class="dv">8</span>, <span class="fl">0.13</span>, <span class="st">&#39;NULL&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-44" title="44">    plt.text(mu_alt, <span class="fl">0.13</span>, <span class="st">&#39;ALT&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-45" title="45"></a>
+<a class="sourceLine" id="cb18-46" title="46">    plt.text(<span class="dv">8</span>, <span class="fl">0.06</span>, <span class="st">&#39;True</span><span class="ch">\n</span><span class="st">Negative&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-47" title="47">    plt.text(mu_alt, <span class="fl">0.06</span>, <span class="st">&#39;True</span><span class="ch">\n</span><span class="st">Positive&#39;</span>, fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-48" title="48"></a>
+<a class="sourceLine" id="cb18-49" title="49">    plt.text(<span class="dv">1</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\beta$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false negative&#39;</span>,</a>
+<a class="sourceLine" id="cb18-50" title="50">             fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb18-51" title="51">    plt.text(<span class="dv">20</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\alpha$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false positive&#39;</span>,</a>
+<a class="sourceLine" id="cb18-52" title="52">             fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb18-53" title="53">    this_text <span class="op">=</span> <span class="ss">f&#39;significance</span><span class="ch">\n</span><span class="ss">level = </span><span class="sc">{</span><span class="bu">round</span>(sig_level, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">&#39;</span></a>
+<a class="sourceLine" id="cb18-54" title="54">    plt.text(<span class="dv">20</span>, <span class="fl">0.10</span>, this_text,</a>
+<a class="sourceLine" id="cb18-55" title="55">             fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb18-56" title="56">    plt.text(<span class="dv">20</span>, <span class="fl">0.06</span>, <span class="vs">r&#39;$\mu_</span><span class="sc">{alt}</span><span class="vs">$&#39;</span> <span class="op">+</span> <span class="ss">f&#39; = </span><span class="sc">{</span>mu_alt<span class="sc">}</span><span class="ss">&#39;</span>,</a>
+<a class="sourceLine" id="cb18-57" title="57">             fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb18-58" title="58"></a>
+<a class="sourceLine" id="cb18-59" title="59">    plt.text(<span class="dv">8</span>, <span class="fl">0.1</span>, <span class="vs">r&#39;$1 - \alpha$&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-60" title="60">    plt.text(mu_alt, <span class="fl">0.1</span>, <span class="vs">r&#39;$1 - \beta$&#39;</span>, fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb18-61" title="61"></a>
+<a class="sourceLine" id="cb18-62" title="62"></a>
+<a class="sourceLine" id="cb18-63" title="63">    plt.text(X[sig_i] <span class="op">+</span> <span class="fl">0.25</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\alpha$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb18-64" title="64">    plt.text(X[sig_i] <span class="op">-</span> <span class="fl">0.75</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\beta$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb18-65" title="65"></a>
+<a class="sourceLine" id="cb18-66" title="66">    plt.xlim([<span class="dv">0</span>, <span class="dv">26</span>])</a>
+<a class="sourceLine" id="cb18-67" title="67">    plt.savefig(<span class="ss">f&#39;hypos_</span><span class="sc">{</span><span class="bu">round</span>(mu_alt, <span class="dv">1</span>)<span class="sc">}</span><span class="ss">.png&#39;</span>)</a>
+<a class="sourceLine" id="cb18-68" title="68">    plt.show()</a>
+<a class="sourceLine" id="cb18-69" title="69">    time.sleep(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb18-70" title="70">    plt.figure().clear()</a></code></pre></div>
+<h1 id="roc-curve-from-dynamic-significance-level">ROC Curve From Dynamic Significance Level</h1>
+<p>ROC = True Positive Rate vs. False Positive Rate</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb19-4" title="4"></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb19-6" title="6">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb19-7" title="7">    p <span class="op">*=</span> math.e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb19-8" title="8">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb19-9" title="9"></a>
+<a class="sourceLine" id="cb19-10" title="10">pw <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb19-11" title="11">X <span class="op">=</span> [(x <span class="op">+</span> <span class="fl">0.5</span>)<span class="op">*</span>pw <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22000</span>)]</a>
+<a class="sourceLine" id="cb19-12" title="12">P1 <span class="op">=</span> [PDF(x, <span class="dv">8</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb19-13" title="13">P2 <span class="op">=</span> [PDF(x, <span class="dv">11</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb19-14" title="14"></a>
+<a class="sourceLine" id="cb19-15" title="15">C1 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb19-16" title="16">C2 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb19-17" title="17">sum1 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb19-18" title="18">sum2 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb19-19" title="19"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb19-20" title="20">    sum1 <span class="op">+=</span> P1[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb19-21" title="21">    sum2 <span class="op">+=</span> P2[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb19-22" title="22">    C1.append(sum1)</a>
+<a class="sourceLine" id="cb19-23" title="23">    C2.append(sum2)</a>
+<a class="sourceLine" id="cb19-24" title="24"></a>
+<a class="sourceLine" id="cb19-25" title="25">ROC_X <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb19-26" title="26">ROC_Y <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb19-27" title="27">pts <span class="op">=</span> <span class="dv">41</span></a>
+<a class="sourceLine" id="cb19-28" title="28">Sig_Levels <span class="op">=</span> [(v <span class="op">*</span> <span class="dv">100</span><span class="op">/</span>(pts<span class="dv">-1</span>))<span class="op">/</span><span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, pts)]</a>
+<a class="sourceLine" id="cb19-29" title="29"></a>
+<a class="sourceLine" id="cb19-30" title="30"><span class="cf">for</span> sig_lev <span class="kw">in</span> Sig_Levels:</a>
+<a class="sourceLine" id="cb19-31" title="31">    <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb19-32" title="32">        sig_lev <span class="op">=</span> <span class="fl">0.999</span></a>
+<a class="sourceLine" id="cb19-33" title="33">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb19-34" title="34">        <span class="cf">if</span> C1[i] <span class="op">&gt;</span> sig_lev:</a>
+<a class="sourceLine" id="cb19-35" title="35">            sig_i <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb19-36" title="36">            <span class="cf">break</span></a>
+<a class="sourceLine" id="cb19-37" title="37"></a>
+<a class="sourceLine" id="cb19-38" title="38">    <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="fl">0.999</span>:</a>
+<a class="sourceLine" id="cb19-39" title="39">        sig_lev <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb19-40" title="40"></a>
+<a class="sourceLine" id="cb19-41" title="41">    TP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C2[sig_i]</a>
+<a class="sourceLine" id="cb19-42" title="42">    FP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C1[sig_i]</a>
+<a class="sourceLine" id="cb19-43" title="43"></a>
+<a class="sourceLine" id="cb19-44" title="44">    ROC_X.append(FP_Rate)</a>
+<a class="sourceLine" id="cb19-45" title="45">    ROC_Y.append(TP_Rate)</a>
+<a class="sourceLine" id="cb19-46" title="46"></a>
+<a class="sourceLine" id="cb19-47" title="47">    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb19-48" title="48">    ax1.plot(X, P1)</a>
+<a class="sourceLine" id="cb19-49" title="49">    ax1.plot(X, P2)</a>
+<a class="sourceLine" id="cb19-50" title="50"></a>
+<a class="sourceLine" id="cb19-51" title="51">    msg <span class="op">=</span> <span class="st">&quot;Receiver Operator Curve (ROC) From Sweeping Significance Level&quot;</span></a>
+<a class="sourceLine" id="cb19-52" title="52">    fig.suptitle(msg, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb19-53" title="53">    </a>
+<a class="sourceLine" id="cb19-54" title="54">    msg <span class="op">=</span> <span class="st">&quot;Significance Level On Null &amp; Alt Distributions&quot;</span></a>
+<a class="sourceLine" id="cb19-55" title="55">    ax1.set_title(label<span class="op">=</span>msg)</a>
+<a class="sourceLine" id="cb19-56" title="56">    ax1.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;Values&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb19-57" title="57">    ax1.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;Probability of Occurance&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb19-58" title="58"></a>
+<a class="sourceLine" id="cb19-59" title="59">    ax1.fill_between(X[sig_i:], <span class="dv">0</span>, P1[sig_i:], facecolor<span class="op">=</span><span class="st">&#39;green&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb19-60" title="60">    ax1.fill_between(X[:sig_i], <span class="dv">0</span>, P2[:sig_i], facecolor<span class="op">=</span><span class="st">&#39;orange&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb19-61" title="61"></a>
+<a class="sourceLine" id="cb19-62" title="62">    ax1.text(<span class="dv">1</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\beta$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false neg&#39;</span>,</a>
+<a class="sourceLine" id="cb19-63" title="63">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb19-64" title="64">    ax1.text(<span class="dv">14</span>, <span class="fl">0.15</span>, <span class="vs">r&#39;$\alpha$ = percent&#39;</span><span class="op">+</span><span class="st">&#39;</span><span class="ch">\n</span><span class="st">false pos&#39;</span>,</a>
+<a class="sourceLine" id="cb19-65" title="65">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb19-66" title="66">    this_text <span class="op">=</span> <span class="ss">f&#39;significance</span><span class="ch">\n</span><span class="ss">level = </span><span class="sc">{</span><span class="bu">round</span>(sig_lev, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">&#39;</span></a>
+<a class="sourceLine" id="cb19-67" title="67">    ax1.text(<span class="dv">14</span>, <span class="fl">0.10</span>, this_text,</a>
+<a class="sourceLine" id="cb19-68" title="68">            fontsize<span class="op">=</span><span class="dv">16</span>, ha<span class="op">=</span><span class="st">&#39;left&#39;</span>)</a>
+<a class="sourceLine" id="cb19-69" title="69"></a>
+<a class="sourceLine" id="cb19-70" title="70">    ax1.text(X[sig_i] <span class="op">+</span> <span class="fl">0.25</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\alpha$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb19-71" title="71">    ax1.text(X[sig_i] <span class="op">-</span> <span class="fl">0.75</span>, <span class="fl">0.005</span>, <span class="vs">r&#39;$\beta$&#39;</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb19-72" title="72"></a>
+<a class="sourceLine" id="cb19-73" title="73">    ax1.set_xlim([<span class="dv">0</span>, <span class="dv">21</span>])</a>
+<a class="sourceLine" id="cb19-74" title="74"></a>
+<a class="sourceLine" id="cb19-75" title="75">    ax2.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb19-76" title="76">    ax2.plot(ROC_X, ROC_Y)</a>
+<a class="sourceLine" id="cb19-77" title="77">    ax2.set_title(label<span class="op">=</span><span class="st">&quot;Receiver Operator Curve (ROC)&quot;</span>)</a>
+<a class="sourceLine" id="cb19-78" title="78">    ax2.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;False Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb19-79" title="79">    ax2.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;True Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb19-80" title="80">    ax2.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb19-81" title="81">    ax2.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb19-82" title="82">    plt.show()</a>
+<a class="sourceLine" id="cb19-83" title="83">    </a>
+<a class="sourceLine" id="cb19-84" title="84">    fig.savefig(<span class="ss">f&#39;hypo_</span><span class="sc">{</span><span class="bu">round</span>(sig_lev, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">.png&#39;</span>)</a>
+<a class="sourceLine" id="cb19-85" title="85">    time.sleep(<span class="fl">0.2</span>)</a></code></pre></div>
+<h1 id="roc-curve-changes-due-to-separation-of-null-and-alt-distributions-means">ROC Curve Changes Due To Separation Of NULL And ALT Distributions’ Means</h1>
+<p>ROC = True Positive Rate vs. False Positive Rate</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb20-4" title="4"></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb20-6" title="6">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb20-7" title="7">    p <span class="op">*=</span> math.e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb20-8" title="8">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb20-9" title="9"></a>
+<a class="sourceLine" id="cb20-10" title="10">pw <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb20-11" title="11">X <span class="op">=</span> [(x <span class="op">+</span> <span class="fl">0.5</span>)<span class="op">*</span>pw <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22000</span>)]</a>
+<a class="sourceLine" id="cb20-12" title="12">P1 <span class="op">=</span> [PDF(x, <span class="dv">8</span>, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb20-13" title="13"></a>
+<a class="sourceLine" id="cb20-14" title="14">C1 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb20-15" title="15">sum1 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb20-16" title="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb20-17" title="17">    sum1 <span class="op">+=</span> P1[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb20-18" title="18">    C1.append(sum1)</a>
+<a class="sourceLine" id="cb20-19" title="19"></a>
+<a class="sourceLine" id="cb20-20" title="20">pts <span class="op">=</span> <span class="dv">101</span></a>
+<a class="sourceLine" id="cb20-21" title="21">Sig_Levels <span class="op">=</span> [(v <span class="op">*</span> <span class="dv">100</span><span class="op">/</span>(pts<span class="dv">-1</span>))<span class="op">/</span><span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, pts)]</a>
+<a class="sourceLine" id="cb20-22" title="22"></a>
+<a class="sourceLine" id="cb20-23" title="23"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">71</span>):</a>
+<a class="sourceLine" id="cb20-24" title="24">    mu_alt <span class="op">=</span> <span class="dv">8</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> i</a>
+<a class="sourceLine" id="cb20-25" title="25">    mu_alt <span class="op">=</span> <span class="bu">round</span>(mu_alt, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-26" title="26">    </a>
+<a class="sourceLine" id="cb20-27" title="27">    P2 <span class="op">=</span> [PDF(x, mu_alt, <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb20-28" title="28">    C2 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb20-29" title="29">    sum2 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb20-30" title="30">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb20-31" title="31">        sum2 <span class="op">+=</span> P2[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb20-32" title="32">        C2.append(sum2)</a>
+<a class="sourceLine" id="cb20-33" title="33"></a>
+<a class="sourceLine" id="cb20-34" title="34">    ROC_X <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb20-35" title="35">    ROC_Y <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb20-36" title="36">    <span class="cf">for</span> sig_lev <span class="kw">in</span> Sig_Levels:</a>
+<a class="sourceLine" id="cb20-37" title="37">        <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb20-38" title="38">            sig_lev <span class="op">=</span> <span class="fl">0.999</span></a>
+<a class="sourceLine" id="cb20-39" title="39">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb20-40" title="40">            <span class="cf">if</span> C1[i] <span class="op">&gt;</span> sig_lev:</a>
+<a class="sourceLine" id="cb20-41" title="41">                sig_i <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb20-42" title="42">                <span class="cf">break</span></a>
+<a class="sourceLine" id="cb20-43" title="43"></a>
+<a class="sourceLine" id="cb20-44" title="44">        <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="fl">0.999</span>:</a>
+<a class="sourceLine" id="cb20-45" title="45">            sig_lev <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb20-46" title="46"></a>
+<a class="sourceLine" id="cb20-47" title="47">        TP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C2[sig_i]</a>
+<a class="sourceLine" id="cb20-48" title="48">        FP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C1[sig_i]</a>
+<a class="sourceLine" id="cb20-49" title="49"></a>
+<a class="sourceLine" id="cb20-50" title="50">        ROC_X.append(FP_Rate)</a>
+<a class="sourceLine" id="cb20-51" title="51">        ROC_Y.append(TP_Rate)</a>
+<a class="sourceLine" id="cb20-52" title="52"></a>
+<a class="sourceLine" id="cb20-53" title="53">    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb20-54" title="54">    ax1.plot(X, P1)</a>
+<a class="sourceLine" id="cb20-55" title="55">    ax1.plot(X, P2)</a>
+<a class="sourceLine" id="cb20-56" title="56"></a>
+<a class="sourceLine" id="cb20-57" title="57">    msg <span class="op">=</span> <span class="st">&quot;Receiver Operator Curve (ROC) From Sweeping Significance Level&quot;</span></a>
+<a class="sourceLine" id="cb20-58" title="58">    fig.suptitle(msg, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb20-59" title="59">    </a>
+<a class="sourceLine" id="cb20-60" title="60">    msg <span class="op">=</span> <span class="st">&quot;Significance Level On Null &amp; Alt Distributions&quot;</span></a>
+<a class="sourceLine" id="cb20-61" title="61">    ax1.set_title(label<span class="op">=</span>msg)</a>
+<a class="sourceLine" id="cb20-62" title="62">    ax1.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;Values&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb20-63" title="63">    ax1.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;Probability of Occurance&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb20-64" title="64"></a>
+<a class="sourceLine" id="cb20-65" title="65">    ax1.text(<span class="dv">8</span>, <span class="fl">0.09</span>, <span class="st">&#39;NULL</span><span class="ch">\n</span><span class="st">Hypothesis&#39;</span>,</a>
+<a class="sourceLine" id="cb20-66" title="66">            fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb20-67" title="67">    ax1.text(mu_alt, <span class="fl">0.04</span>, <span class="st">&#39;ALT</span><span class="ch">\n</span><span class="st">Hypothesis&#39;</span>,</a>
+<a class="sourceLine" id="cb20-68" title="68">            fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb20-69" title="69"></a>
+<a class="sourceLine" id="cb20-70" title="70">    ax1.set_xlim([<span class="dv">0</span>, <span class="dv">21</span>])</a>
+<a class="sourceLine" id="cb20-71" title="71"></a>
+<a class="sourceLine" id="cb20-72" title="72">    ax2.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb20-73" title="73">    ax2.plot(ROC_X, ROC_Y)</a>
+<a class="sourceLine" id="cb20-74" title="74">    ax2.set_title(label<span class="op">=</span><span class="st">&quot;Receiver Operator Curve (ROC)&quot;</span>)</a>
+<a class="sourceLine" id="cb20-75" title="75">    ax2.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;False Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb20-76" title="76">    ax2.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;True Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb20-77" title="77">    ax2.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-78" title="78">    ax2.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-79" title="79">    plt.show()</a>
+<a class="sourceLine" id="cb20-80" title="80">    </a>
+<a class="sourceLine" id="cb20-81" title="81">    fig.savefig(<span class="ss">f&#39;hypo_</span><span class="sc">{</span><span class="bu">round</span>(mu_alt, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">.png&#39;</span>)</a>
+<a class="sourceLine" id="cb20-82" title="82">    <span class="co"># time.sleep(0.05)</span></a></code></pre></div>
+<h1 id="roc-curve-changes-due-to-changes-in-null-and-alt-distributions-standard-deviations">ROC Curve Changes Due To Changes In NULL And ALT Distributions’ Standard Deviations</h1>
+<p>ROC = True Positive Rate vs. False Positive Rate</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb21-4" title="4"></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="kw">def</span> PDF(x, mean<span class="op">=</span><span class="dv">0</span>, std_dev<span class="op">=</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb21-6" title="6">    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> (std_dev <span class="op">*</span> ((<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb21-7" title="7">    p <span class="op">*=</span> math.e <span class="op">**</span> (<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean)<span class="op">/</span>std_dev)<span class="op">**</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb21-8" title="8">    <span class="cf">return</span> p</a>
+<a class="sourceLine" id="cb21-9" title="9"></a>
+<a class="sourceLine" id="cb21-10" title="10">pw <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb21-11" title="11">X <span class="op">=</span> [(x <span class="op">+</span> <span class="fl">0.5</span>)<span class="op">*</span>pw <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22000</span>)]</a>
+<a class="sourceLine" id="cb21-12" title="12"></a>
+<a class="sourceLine" id="cb21-13" title="13">pts <span class="op">=</span> <span class="dv">101</span></a>
+<a class="sourceLine" id="cb21-14" title="14">Sig_Levels <span class="op">=</span> [(v <span class="op">*</span> <span class="dv">100</span><span class="op">/</span>(pts<span class="dv">-1</span>))<span class="op">/</span><span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, pts)]</a>
+<a class="sourceLine" id="cb21-15" title="15"></a>
+<a class="sourceLine" id="cb21-16" title="16"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">26</span>):</a>
+<a class="sourceLine" id="cb21-17" title="17">    std_alt <span class="op">=</span> <span class="fl">3.5</span> <span class="op">-</span> <span class="fl">0.1</span> <span class="op">*</span> i</a>
+<a class="sourceLine" id="cb21-18" title="18">    std_alt <span class="op">=</span> <span class="bu">round</span>(std_alt, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb21-19" title="19"></a>
+<a class="sourceLine" id="cb21-20" title="20">    P1 <span class="op">=</span> [PDF(x, <span class="dv">8</span>, std_alt) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb21-21" title="21">    C1 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb21-22" title="22">    sum1 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb21-23" title="23">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb21-24" title="24">        sum1 <span class="op">+=</span> P1[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb21-25" title="25">        C1.append(sum1)</a>
+<a class="sourceLine" id="cb21-26" title="26">    </a>
+<a class="sourceLine" id="cb21-27" title="27">    P2 <span class="op">=</span> [PDF(x, <span class="dv">12</span>, std_alt) <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb21-28" title="28">    C2 <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb21-29" title="29">    sum2 <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb21-30" title="30">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb21-31" title="31">        sum2 <span class="op">+=</span> P2[i]<span class="op">*</span>pw</a>
+<a class="sourceLine" id="cb21-32" title="32">        C2.append(sum2)</a>
+<a class="sourceLine" id="cb21-33" title="33"></a>
+<a class="sourceLine" id="cb21-34" title="34">    ROC_X <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb21-35" title="35">    ROC_Y <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb21-36" title="36">    <span class="cf">for</span> sig_lev <span class="kw">in</span> Sig_Levels:</a>
+<a class="sourceLine" id="cb21-37" title="37">        <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb21-38" title="38">            sig_lev <span class="op">=</span> <span class="fl">0.999</span></a>
+<a class="sourceLine" id="cb21-39" title="39">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(X)):</a>
+<a class="sourceLine" id="cb21-40" title="40">            <span class="cf">if</span> C1[i] <span class="op">&gt;</span> sig_lev:</a>
+<a class="sourceLine" id="cb21-41" title="41">                sig_i <span class="op">=</span> i</a>
+<a class="sourceLine" id="cb21-42" title="42">                <span class="cf">break</span></a>
+<a class="sourceLine" id="cb21-43" title="43"></a>
+<a class="sourceLine" id="cb21-44" title="44">        <span class="cf">if</span> sig_lev <span class="op">==</span> <span class="fl">0.999</span>:</a>
+<a class="sourceLine" id="cb21-45" title="45">            sig_lev <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb21-46" title="46"></a>
+<a class="sourceLine" id="cb21-47" title="47">        TP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C2[sig_i]</a>
+<a class="sourceLine" id="cb21-48" title="48">        FP_Rate <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> C1[sig_i]</a>
+<a class="sourceLine" id="cb21-49" title="49"></a>
+<a class="sourceLine" id="cb21-50" title="50">        ROC_X.append(FP_Rate)</a>
+<a class="sourceLine" id="cb21-51" title="51">        ROC_Y.append(TP_Rate)</a>
+<a class="sourceLine" id="cb21-52" title="52"></a>
+<a class="sourceLine" id="cb21-53" title="53">    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb21-54" title="54">    ax1.plot(X, P1)</a>
+<a class="sourceLine" id="cb21-55" title="55">    ax1.plot(X, P2)</a>
+<a class="sourceLine" id="cb21-56" title="56"></a>
+<a class="sourceLine" id="cb21-57" title="57">    msg <span class="op">=</span> <span class="st">&quot;Receiver Operator Curve (ROC) From Sweeping Significance Level&quot;</span></a>
+<a class="sourceLine" id="cb21-58" title="58">    fig.suptitle(msg, fontsize<span class="op">=</span><span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb21-59" title="59">    </a>
+<a class="sourceLine" id="cb21-60" title="60">    msg <span class="op">=</span> <span class="st">&quot;Significance Level On Null &amp; Alt Distributions&quot;</span></a>
+<a class="sourceLine" id="cb21-61" title="61">    ax1.set_title(label<span class="op">=</span>msg)</a>
+<a class="sourceLine" id="cb21-62" title="62">    ax1.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;Values&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb21-63" title="63">    ax1.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;Probability of Occurance&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb21-64" title="64"></a>
+<a class="sourceLine" id="cb21-65" title="65">    ax1.text(<span class="dv">8</span>, <span class="fl">0.09</span>, <span class="st">&#39;NULL</span><span class="ch">\n</span><span class="st">Hypothesis&#39;</span>,</a>
+<a class="sourceLine" id="cb21-66" title="66">            fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb21-67" title="67">    ax1.text(<span class="dv">12</span>, <span class="fl">0.04</span>, <span class="st">&#39;ALT</span><span class="ch">\n</span><span class="st">Hypothesis&#39;</span>,</a>
+<a class="sourceLine" id="cb21-68" title="68">            fontsize<span class="op">=</span><span class="dv">14</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>)</a>
+<a class="sourceLine" id="cb21-69" title="69"></a>
+<a class="sourceLine" id="cb21-70" title="70">    ax1.set_xlim([<span class="dv">0</span>, <span class="dv">21</span>])</a>
+<a class="sourceLine" id="cb21-71" title="71"></a>
+<a class="sourceLine" id="cb21-72" title="72">    ax2.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb21-73" title="73">    ax2.plot(ROC_X, ROC_Y)</a>
+<a class="sourceLine" id="cb21-74" title="74">    ax2.set_title(label<span class="op">=</span><span class="st">&quot;Receiver Operator Curve (ROC)&quot;</span>)</a>
+<a class="sourceLine" id="cb21-75" title="75">    ax2.set_xlabel(xlabel<span class="op">=</span><span class="st">&quot;False Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb21-76" title="76">    ax2.set_ylabel(ylabel<span class="op">=</span><span class="st">&quot;True Positive Rate&quot;</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb21-77" title="77">    ax2.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb21-78" title="78">    ax2.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb21-79" title="79">    plt.show()</a>
+<a class="sourceLine" id="cb21-80" title="80">    </a>
+<a class="sourceLine" id="cb21-81" title="81">    fig.savefig(<span class="ss">f&#39;hypo_</span><span class="sc">{</span><span class="bu">round</span>(sig_lev, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">.png&#39;</span>)</a>
+<a class="sourceLine" id="cb21-82" title="82">    <span class="co"># time.sleep(0.05)</span></a></code></pre></div>
+<center>
+<h1>
+F1 Score
+</h1>
+</center>
+<br /><span class="math display">$$F_1 = \frac {2}{\frac {1}{Recall} + \frac {1}{Precision}}$$</span><br /> <br>
+<center>
+$F_1 = $ Harmonic Mean Of Recall and Precision
+</center>
+<center>
+________________________________________________________
+</center>
+<center>
+<h1>
+Accuracy, Recall, Precision
+</h1>
+</center>
+<p><br> <br /><span class="math display">$$Accuracy = \frac{TP + TN}{TP + FP + TN + FN} = \frac {What\;We\;Got\; Right}{All\;Cases}$$</span><br /> <br><br> <br /><span class="math display">$$Recall = \frac{TP}{TP + FN} = \frac {What\;Positives\;We\;Got\;Right}{All\;Actual\;Positives}$$</span><br /> <br><br> <br /><span class="math display">$$Precision = \frac{TP}{TP + FP} = \frac {What\;Positives\;We\;Got\;Right}{All\;Positive\;Predictions}$$</span><br /></p>
+<h1 id="lasso-in-logistic-regression-to-compare-with-statistics-version">LASSO In Logistic Regression to Compare with Statistics Version</h1>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1"><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression <span class="im">as</span> LR</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</a>
+<a class="sourceLine" id="cb22-3" title="3"></a>
+<a class="sourceLine" id="cb22-4" title="4">X, y <span class="op">=</span> X, y <span class="op">=</span> load_iris(return_X_y<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb22-5" title="5">lr_mod <span class="op">=</span> LR(penalty<span class="op">=</span><span class="st">&#39;l1&#39;</span>, solver<span class="op">=</span><span class="st">&#39;liblinear&#39;</span>)</a>
+<a class="sourceLine" id="cb22-6" title="6">lr_mod.fit(X, y)</a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="bu">print</span>(lr_mod.coef_)</a></code></pre></div>
+<pre><code>[[ 0.          2.52235623 -2.83220134  0.        ]
+ [ 0.32846823 -1.79370624  0.66582088 -1.57267348]
+ [-2.62263278 -2.50833176  3.26131365  4.61826807]]</code></pre>
+<h1 id="regressor-coefficient-from-statistics-vs.-machine-learning-methods">Regressor Coefficient From Statistics Vs. Machine Learning Methods</h1>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb24-3" title="3"></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="co"># Synthesize some data (i.e. create fake data)</span></a>
+<a class="sourceLine" id="cb24-5" title="5">X <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb24-6" title="6">Y <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> X</a>
+<a class="sourceLine" id="cb24-7" title="7">Y_noise <span class="op">=</span> np.<span class="bu">max</span>(Y) <span class="op">*</span> <span class="fl">0.073</span></a>
+<a class="sourceLine" id="cb24-8" title="8">Y <span class="op">+=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.073</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb24-9" title="9"></a>
+<a class="sourceLine" id="cb24-10" title="10"><span class="co"># Statistics Way To Create Model</span></a>
+<a class="sourceLine" id="cb24-11" title="11">X_std <span class="op">=</span> np.std(X)</a>
+<a class="sourceLine" id="cb24-12" title="12">Y_std <span class="op">=</span> np.std(Y)</a>
+<a class="sourceLine" id="cb24-13" title="13">r <span class="op">=</span> np.corrcoef(X, Y)</a>
+<a class="sourceLine" id="cb24-14" title="14">Cs <span class="op">=</span> Y_std <span class="op">/</span> X_std <span class="op">*</span> r[<span class="dv">0</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb24-15" title="15"><span class="bu">print</span>(Cs)</a>
+<a class="sourceLine" id="cb24-16" title="16"></a>
+<a class="sourceLine" id="cb24-17" title="17"><span class="co"># Machine Learning</span></a>
+<a class="sourceLine" id="cb24-18" title="18">mod_LR <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>, copy_X<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb24-19" title="19">mod_LR.fit(X.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), Y.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb24-20" title="20">Cml <span class="op">=</span> mod_LR.coef_[<span class="dv">0</span>, <span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb24-21" title="21"><span class="bu">print</span>(Cml)</a>
+<a class="sourceLine" id="cb24-22" title="22"></a>
+<a class="sourceLine" id="cb24-23" title="23"><span class="co"># Visualize</span></a>
+<a class="sourceLine" id="cb24-24" title="24">plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb24-25" title="25">plt.plot(X, Cs<span class="op">*</span>X<span class="op">+</span><span class="dv">1</span>) <span class="co"># + 1 separates the two exact plots</span></a>
+<a class="sourceLine" id="cb24-26" title="26">plt.plot(X, Cml<span class="op">*</span>X)</a>
+<a class="sourceLine" id="cb24-27" title="27">plt.title(<span class="st">&#39;Models Determined By Stats And ML&#39;</span>)</a>
+<a class="sourceLine" id="cb24-28" title="28">plt.legend((<span class="st">&#39;Stats Way&#39;</span>, <span class="st">&#39;ML Way&#39;</span>))</a>
+<a class="sourceLine" id="cb24-29" title="29">plt.show()</a></code></pre></div>
+<pre><code>1.9918506427390517
+1.9957689952415045</code></pre>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_35_1.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h1 id="regressor-coefficient-and-intercept-from-statistics">Regressor Coefficient AND “Intercept”<br>       FROM Statistics</h1>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb26-3" title="3"></a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="co"># Synthesize some data (i.e. create fake data)</span></a>
+<a class="sourceLine" id="cb26-5" title="5">X <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb26-6" title="6">Y <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> X <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb26-7" title="7">Y_noise <span class="op">=</span> np.<span class="bu">max</span>(Y) <span class="op">*</span> <span class="fl">0.073</span></a>
+<a class="sourceLine" id="cb26-8" title="8">Y <span class="op">+=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.073</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb26-9" title="9"></a>
+<a class="sourceLine" id="cb26-10" title="10"><span class="co"># Statistics Way To Fit Model Coefficient</span></a>
+<a class="sourceLine" id="cb26-11" title="11">X_std <span class="op">=</span> np.std(X)</a>
+<a class="sourceLine" id="cb26-12" title="12">Y_std <span class="op">=</span> np.std(Y)</a>
+<a class="sourceLine" id="cb26-13" title="13">r <span class="op">=</span> np.corrcoef(X, Y)</a>
+<a class="sourceLine" id="cb26-14" title="14">Cs <span class="op">=</span> Y_std <span class="op">/</span> X_std <span class="op">*</span> r[<span class="dv">0</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb26-15" title="15"><span class="bu">print</span>(Cs)</a>
+<a class="sourceLine" id="cb26-16" title="16"></a>
+<a class="sourceLine" id="cb26-17" title="17"><span class="co"># Statistics Way To Calculate Intercept</span></a>
+<a class="sourceLine" id="cb26-18" title="18">X_mean <span class="op">=</span> np.mean(X)</a>
+<a class="sourceLine" id="cb26-19" title="19">Y_mean <span class="op">=</span> np.mean(Y)</a>
+<a class="sourceLine" id="cb26-20" title="20">b <span class="op">=</span> Y_mean <span class="op">-</span> Cs<span class="op">*</span>X_mean</a>
+<a class="sourceLine" id="cb26-21" title="21"><span class="bu">print</span>(b)</a></code></pre></div>
+<pre><code>1.9992493711567196
+1.001206029449972</code></pre>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_37_1.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># Visualize</span></a>
+<a class="sourceLine" id="cb28-2" title="2">plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb28-3" title="3">plt.scatter(X, Y, color<span class="op">=</span><span class="st">&#39;magenta&#39;</span>)</a>
+<a class="sourceLine" id="cb28-4" title="4">plt.plot(X, Cs<span class="op">*</span>X<span class="op">+</span>b, color<span class="op">=</span><span class="st">&#39;black&#39;</span>)</a>
+<a class="sourceLine" id="cb28-5" title="5">plt.ylim((<span class="dv">0</span>, <span class="fl">3.5</span>))</a>
+<a class="sourceLine" id="cb28-6" title="6">plt.title(<span class="st">&#39;Models Determined By Stats And ML&#39;</span>)</a>
+<a class="sourceLine" id="cb28-7" title="7">plt.show()</a></code></pre></div>
+<h1 id="central-limit-theorem-principles">Central Limit Theorem Principles</h1>
+<h2 id="sample-means-distribtion-for-increasing-sample-sizes">Sample Means Distribtion For Increasing Sample Sizes</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</a>
+<a class="sourceLine" id="cb29-4" title="4"></a>
+<a class="sourceLine" id="cb29-5" title="5">die_values <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</a>
+<a class="sourceLine" id="cb29-6" title="6">sample_sizes <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>]</a>
+<a class="sourceLine" id="cb29-7" title="7"></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="cf">for</span> experiment <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb29-9" title="9">    <span class="cf">for</span> sample_size <span class="kw">in</span> sample_sizes:</a>
+<a class="sourceLine" id="cb29-10" title="10">        sample_means <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb29-11" title="11">        <span class="cf">for</span> num_samples <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</a>
+<a class="sourceLine" id="cb29-12" title="12">            die_cast <span class="op">=</span> np.random.choice(</a>
+<a class="sourceLine" id="cb29-13" title="13">            die_values, size<span class="op">=</span>sample_size)</a>
+<a class="sourceLine" id="cb29-14" title="14">            sample_mean <span class="op">=</span> np.mean(die_cast)</a>
+<a class="sourceLine" id="cb29-15" title="15">            sample_means.append(sample_mean)</a>
+<a class="sourceLine" id="cb29-16" title="16"></a>
+<a class="sourceLine" id="cb29-17" title="17">        experiment_mean <span class="op">=</span> np.mean(sample_means)</a>
+<a class="sourceLine" id="cb29-18" title="18">        experiment_std <span class="op">=</span> np.std(sample_means)</a>
+<a class="sourceLine" id="cb29-19" title="19">        x_min <span class="op">=</span> <span class="bu">min</span>(sample_means)</a>
+<a class="sourceLine" id="cb29-20" title="20">        x_max <span class="op">=</span> <span class="bu">max</span>(sample_means)</a>
+<a class="sourceLine" id="cb29-21" title="21">        x <span class="op">=</span> np.arange(x_min, x_max, <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb29-22" title="22">        y <span class="op">=</span> norm.pdf(x, experiment_mean, experiment_std)</a>
+<a class="sourceLine" id="cb29-23" title="23">        plt.plot(x, y)</a>
+<a class="sourceLine" id="cb29-24" title="24"></a>
+<a class="sourceLine" id="cb29-25" title="25">    legend_texts <span class="op">=</span> [<span class="ss">f&#39;Sample Size = </span><span class="sc">{v}</span><span class="ss">&#39;</span> <span class="cf">for</span> v <span class="kw">in</span> sample_sizes]</a>
+<a class="sourceLine" id="cb29-26" title="26">    plt.legend(legend_texts)</a>
+<a class="sourceLine" id="cb29-27" title="27">    plt.title(<span class="st">&quot;Distribution Changes By Sample Size&quot;</span>)</a>
+<a class="sourceLine" id="cb29-28" title="28">    plt.show()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_41_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h2 id="approaching-the-central-limit-theorem">Approaching The Central Limit Theorem</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb30-3" title="3"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="im">import</span> os</a>
+<a class="sourceLine" id="cb30-5" title="5"></a>
+<a class="sourceLine" id="cb30-6" title="6">cwd <span class="op">=</span> os.getcwd()</a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="cf">if</span> <span class="kw">not</span> os.path.isdir(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images&quot;</span>):</a>
+<a class="sourceLine" id="cb30-8" title="8">    os.mkdir(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images&quot;</span>)</a>
+<a class="sourceLine" id="cb30-9" title="9"></a>
+<a class="sourceLine" id="cb30-10" title="10">no_images <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb30-11" title="11">image_num <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb30-12" title="12"><span class="cf">if</span> no_images:</a>
+<a class="sourceLine" id="cb30-13" title="13">    die_values <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</a>
+<a class="sourceLine" id="cb30-14" title="14">    sample_sizes <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>]</a>
+<a class="sourceLine" id="cb30-15" title="15">    num_add_samples_list <span class="op">=</span> [<span class="dv">2</span>] <span class="op">+</span> [<span class="dv">1</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="dv">2</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+</span> [<span class="dv">10</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="dv">100</span>]<span class="op">*</span><span class="dv">9</span></a>
+<a class="sourceLine" id="cb30-16" title="16">    sample_means_D <span class="op">=</span> {k: [] <span class="cf">for</span> k <span class="kw">in</span> sample_sizes}</a>
+<a class="sourceLine" id="cb30-17" title="17">    total_samples <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb30-18" title="18"></a>
+<a class="sourceLine" id="cb30-19" title="19">    <span class="cf">for</span> num_samples <span class="kw">in</span> num_add_samples_list:</a>
+<a class="sourceLine" id="cb30-20" title="20">        total_samples <span class="op">+=</span> num_samples</a>
+<a class="sourceLine" id="cb30-21" title="21">        plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</a>
+<a class="sourceLine" id="cb30-22" title="22">        <span class="cf">for</span> sample_size <span class="kw">in</span> sample_sizes:</a>
+<a class="sourceLine" id="cb30-23" title="23">            <span class="cf">for</span> sample_num <span class="kw">in</span> <span class="bu">range</span>(num_samples):</a>
+<a class="sourceLine" id="cb30-24" title="24">                die_cast <span class="op">=</span> np.random.choice(</a>
+<a class="sourceLine" id="cb30-25" title="25">                die_values, size<span class="op">=</span>sample_size)</a>
+<a class="sourceLine" id="cb30-26" title="26">                sample_mean <span class="op">=</span> np.mean(die_cast)</a>
+<a class="sourceLine" id="cb30-27" title="27">                sample_means_D[sample_size].append(sample_mean)</a>
+<a class="sourceLine" id="cb30-28" title="28"></a>
+<a class="sourceLine" id="cb30-29" title="29">            experiment_mean <span class="op">=</span> np.mean(sample_means_D[sample_size])</a>
+<a class="sourceLine" id="cb30-30" title="30">            experiment_std <span class="op">=</span> np.std(sample_means_D[sample_size])</a>
+<a class="sourceLine" id="cb30-31" title="31">            x_min <span class="op">=</span> <span class="bu">min</span>(sample_means_D[sample_size])</a>
+<a class="sourceLine" id="cb30-32" title="32">            x_max <span class="op">=</span> <span class="bu">max</span>(sample_means_D[sample_size])</a>
+<a class="sourceLine" id="cb30-33" title="33">            x <span class="op">=</span> np.arange(x_min, x_max, <span class="fl">0.001</span>)</a>
+<a class="sourceLine" id="cb30-34" title="34">            y <span class="op">=</span> norm.pdf(x, experiment_mean, experiment_std)</a>
+<a class="sourceLine" id="cb30-35" title="35">            plt.plot(x, y)</a>
+<a class="sourceLine" id="cb30-36" title="36"></a>
+<a class="sourceLine" id="cb30-37" title="37">        legend_texts <span class="op">=</span> [<span class="ss">f&#39;Sample Size = </span><span class="sc">{v}</span><span class="ss">&#39;</span> <span class="cf">for</span> v <span class="kw">in</span> sample_sizes]</a>
+<a class="sourceLine" id="cb30-38" title="38">        plt.legend(legend_texts)</a>
+<a class="sourceLine" id="cb30-39" title="39">        title <span class="op">=</span> <span class="ss">f&quot;Distribution Of Means For </span><span class="sc">{</span>total_samples<span class="sc">}</span><span class="ss"> &quot;</span></a>
+<a class="sourceLine" id="cb30-40" title="40">        title <span class="op">+=</span> <span class="st">&quot;Samples For Various Sample Sizes&quot;</span></a>
+<a class="sourceLine" id="cb30-41" title="41">        plt.title(title)</a>
+<a class="sourceLine" id="cb30-42" title="42">        plt.xlim([<span class="dv">1</span>, <span class="dv">6</span>])</a>
+<a class="sourceLine" id="cb30-43" title="43">        <span class="cf">if</span> total_samples <span class="op">==</span> <span class="dv">2</span>:</a>
+<a class="sourceLine" id="cb30-44" title="44">            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</a>
+<a class="sourceLine" id="cb30-45" title="45">                plt.savefig(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images/</span><span class="sc">{</span>image_num<span class="sc">:02d}</span><span class="ss">.png&quot;</span>)</a>
+<a class="sourceLine" id="cb30-46" title="46">                image_num <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb30-47" title="47">        <span class="cf">elif</span> total_samples <span class="op">==</span> <span class="dv">1000</span>:</a>
+<a class="sourceLine" id="cb30-48" title="48">            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</a>
+<a class="sourceLine" id="cb30-49" title="49">                plt.savefig(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images/</span><span class="sc">{</span>image_num<span class="sc">:02d}</span><span class="ss">.png&quot;</span>)</a>
+<a class="sourceLine" id="cb30-50" title="50">                image_num <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb30-51" title="51">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb30-52" title="52">            plt.savefig(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images/</span><span class="sc">{</span>image_num<span class="sc">:02d}</span><span class="ss">.png&quot;</span>)</a>
+<a class="sourceLine" id="cb30-53" title="53">            image_num <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb30-54" title="54">        </a>
+<a class="sourceLine" id="cb30-55" title="55">        plt.close()</a>
+<a class="sourceLine" id="cb30-56" title="56"></a>
+<a class="sourceLine" id="cb30-57" title="57"><span class="co"># Run below on command line to create movie - needs ffmpeg</span></a>
+<a class="sourceLine" id="cb30-58" title="58"><span class="co"># ffmpeg -framerate 4 -pattern_type glob -i &quot;*.png&quot; output.avi</span></a></code></pre></div>
+<h2 id="sample-from-huge-population-to-see-when-central-limit-theorem-is-reached">Sample From Huge Population To See When Central Limit Theorem Is Reached</h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb31-3" title="3"></a>
+<a class="sourceLine" id="cb31-4" title="4">die_values <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</a>
+<a class="sourceLine" id="cb31-5" title="5">die_roles <span class="op">=</span> [np.random.choice(die_values, size<span class="op">=</span><span class="dv">1</span>)[<span class="dv">0</span>] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">int</span>(<span class="fl">1e6</span>))]</a>
+<a class="sourceLine" id="cb31-6" title="6"></a>
+<a class="sourceLine" id="cb31-7" title="7"><span class="co"># plt.hist(die_roles, bins=6, width=0.73)</span></a>
+<a class="sourceLine" id="cb31-8" title="8"><span class="co"># plt.show();</span></a>
+<a class="sourceLine" id="cb31-9" title="9"></a>
+<a class="sourceLine" id="cb31-10" title="10">mean <span class="op">=</span> <span class="bu">round</span>(np.mean(die_roles), <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="bu">print</span>(<span class="ss">f&#39;Population mean is </span><span class="sc">{</span>mean<span class="sc">}</span><span class="ss">&#39;</span>)</a>
+<a class="sourceLine" id="cb31-12" title="12"></a>
+<a class="sourceLine" id="cb31-13" title="13"><span class="cf">for</span> sample_size <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">64</span>]:</a>
+<a class="sourceLine" id="cb31-14" title="14">    sample_means <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb31-15" title="15">    samples <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-16" title="16">    <span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb31-17" title="17">        samples <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb31-18" title="18">        roles <span class="op">=</span> np.random.choice(die_roles, size<span class="op">=</span>sample_size)</a>
+<a class="sourceLine" id="cb31-19" title="19">        sample_mean <span class="op">=</span> np.mean(roles)</a>
+<a class="sourceLine" id="cb31-20" title="20">        sample_means.append(sample_mean)</a>
+<a class="sourceLine" id="cb31-21" title="21"></a>
+<a class="sourceLine" id="cb31-22" title="22">        running_mean <span class="op">=</span> <span class="bu">round</span>(np.mean(sample_means), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb31-23" title="23">        <span class="cf">if</span> running_mean <span class="op">==</span> <span class="fl">3.50</span>:</a>
+<a class="sourceLine" id="cb31-24" title="24">            <span class="cf">break</span></a>
+<a class="sourceLine" id="cb31-25" title="25"></a>
+<a class="sourceLine" id="cb31-26" title="26">    title <span class="op">=</span> <span class="ss">f&#39;Mean sample means = </span><span class="sc">{</span>running_mean<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span>samples<span class="sc">}</span><span class="ss"> samples of </span><span class="sc">{</span>sample_size<span class="sc">}</span><span class="ss">&#39;</span></a>
+<a class="sourceLine" id="cb31-27" title="27">    running_std <span class="op">=</span> np.std(sample_means)</a>
+<a class="sourceLine" id="cb31-28" title="28">    x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">6</span>, <span class="fl">0.001</span>)</a>
+<a class="sourceLine" id="cb31-29" title="29">    y <span class="op">=</span> norm.pdf(x, running_mean, running_std)</a>
+<a class="sourceLine" id="cb31-30" title="30">    plt.xlim([<span class="dv">1</span>, <span class="dv">6</span>])</a>
+<a class="sourceLine" id="cb31-31" title="31">    plt.plot(x, y)</a>
+<a class="sourceLine" id="cb31-32" title="32">    plt.title(title)</a>
+<a class="sourceLine" id="cb31-33" title="33">    plt.axvline(<span class="fl">3.5</span>)</a>
+<a class="sourceLine" id="cb31-34" title="34">    plt.show()<span class="op">;</span></a></code></pre></div>
+<h2 id="the-ugly-approach-to-the-central-limit-theorem">The Ugly Approach To The Central Limit Theorem</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="im">from</span> scipy.stats <span class="im">import</span> norm</a>
+<a class="sourceLine" id="cb32-4" title="4"><span class="im">import</span> os</a>
+<a class="sourceLine" id="cb32-5" title="5"></a>
+<a class="sourceLine" id="cb32-6" title="6">cwd <span class="op">=</span> os.getcwd()</a>
+<a class="sourceLine" id="cb32-7" title="7"><span class="cf">if</span> <span class="kw">not</span> os.path.isdir(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images&quot;</span>):</a>
+<a class="sourceLine" id="cb32-8" title="8">    os.mkdir(<span class="ss">f&quot;</span><span class="sc">{</span>cwd<span class="sc">}</span><span class="ss">/images&quot;</span>)</a>
+<a class="sourceLine" id="cb32-9" title="9"></a>
+<a class="sourceLine" id="cb32-10" title="10">no_images <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb32-11" title="11">image_num <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-12" title="12"><span class="cf">if</span> no_images:</a>
+<a class="sourceLine" id="cb32-13" title="13">    die_values <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</a>
+<a class="sourceLine" id="cb32-14" title="14">    num_add_samples_list <span class="op">=</span> [<span class="dv">2</span>] <span class="op">+</span> [<span class="dv">1</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="dv">2</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+</span> [<span class="dv">10</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="dv">100</span>]<span class="op">*</span><span class="dv">9</span></a>
+<a class="sourceLine" id="cb32-15" title="15">    num_add_samples_list <span class="op">+=</span> [<span class="dv">9000</span>] <span class="op">+</span> [<span class="dv">90000</span>] <span class="op">+</span> [<span class="dv">900000</span>] <span class="op">+</span> [<span class="dv">1000000</span>]</a>
+<a class="sourceLine" id="cb32-16" title="16">    sample_means <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb32-17" title="17">    total_samples <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-18" title="18"></a>
+<a class="sourceLine" id="cb32-19" title="19">    <span class="cf">for</span> num_samples <span class="kw">in</span> num_add_samples_list:</a>
+<a class="sourceLine" id="cb32-20" title="20">        total_samples <span class="op">+=</span> num_samples</a>
+<a class="sourceLine" id="cb32-21" title="21">        <span class="cf">for</span> sample_num <span class="kw">in</span> <span class="bu">range</span>(num_samples):</a>
+<a class="sourceLine" id="cb32-22" title="22">            die_casts <span class="op">=</span> np.random.choice(</a>
+<a class="sourceLine" id="cb32-23" title="23">                die_values, size<span class="op">=</span><span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb32-24" title="24">            sample_mean <span class="op">=</span> np.mean(die_casts)</a>
+<a class="sourceLine" id="cb32-25" title="25">            sample_means.append(sample_mean)</a>
+<a class="sourceLine" id="cb32-26" title="26"></a>
+<a class="sourceLine" id="cb32-27" title="27">        fig, ax1 <span class="op">=</span> plt.subplots()</a>
+<a class="sourceLine" id="cb32-28" title="28">        fig.set_figheight(<span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb32-29" title="29">        fig.set_figwidth(<span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb32-30" title="30"></a>
+<a class="sourceLine" id="cb32-31" title="31">        color <span class="op">=</span> <span class="st">&#39;tab:blue&#39;</span></a>
+<a class="sourceLine" id="cb32-32" title="32">        ax1.set_xlabel(<span class="st">&#39;Sample Means&#39;</span>)</a>
+<a class="sourceLine" id="cb32-33" title="33">        ax1.set_ylabel(<span class="st">&#39;Occurence Rate&#39;</span>, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb32-34" title="34">        bins <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>(sample_means))</a>
+<a class="sourceLine" id="cb32-35" title="35">        ax1.hist(sample_means, bins<span class="op">=</span>bins, density<span class="op">=</span><span class="va">True</span>, stacked<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb32-36" title="36">        ax1.set_xlim([<span class="dv">2</span>, <span class="dv">5</span>])</a>
+<a class="sourceLine" id="cb32-37" title="37">        ax1.set_ylim([<span class="dv">0</span>, <span class="dv">4</span>])</a>
+<a class="sourceLine" id="cb32-38" title="38"></a>
+<a class="sourceLine" id="cb32-39" title="39">        ax2 <span class="op">=</span> ax1.twinx()</a>
+<a class="sourceLine" id="cb32-40" title="40"></a>
+<a class="sourceLine" id="cb32-41" title="41">        color <span class="op">=</span> <span class="st">&#39;tab:red&#39;</span></a>
+<a class="sourceLine" id="cb32-42" title="42">        ax2.set_ylabel(<span class="st">&#39;Probability&#39;</span>, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb32-43" title="43">        ax2.tick_params(axis<span class="op">=</span><span class="st">&#39;y&#39;</span>, labelcolor<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb32-44" title="44">        running_mean <span class="op">=</span> <span class="bu">round</span>(np.mean(sample_means), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb32-45" title="45">        title <span class="op">=</span> <span class="ss">f&#39;Mean of sample means = </span><span class="sc">{</span>running_mean<span class="sc">}</span><span class="ss"> &#39;</span></a>
+<a class="sourceLine" id="cb32-46" title="46">        title <span class="op">+=</span> <span class="ss">f&#39;for </span><span class="sc">{</span>total_samples<span class="sc">}</span><span class="ss"> samples of size 32&#39;</span></a>
+<a class="sourceLine" id="cb32-47" title="47">        running_std <span class="op">=</span> np.std(sample_means)</a>
+<a class="sourceLine" id="cb32-48" title="48">        x <span class="op">=</span> np.arange(<span class="dv">2</span>, <span class="dv">5</span>, <span class="fl">0.001</span>)</a>
+<a class="sourceLine" id="cb32-49" title="49">        y <span class="op">=</span> norm.pdf(x, running_mean, running_std)</a>
+<a class="sourceLine" id="cb32-50" title="50">        ax2.plot(x, y, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb32-51" title="51">        ax2.set_ylim([<span class="dv">0</span>, <span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb32-52" title="52"></a>
+<a class="sourceLine" id="cb32-53" title="53">        plt.title(title)</a>
+<a class="sourceLine" id="cb32-54" title="54">        plt.axvline(<span class="fl">3.5</span>)</a>
+<a class="sourceLine" id="cb32-55" title="55"></a>
+<a class="sourceLine" id="cb32-56" title="56">        fig.tight_layout()</a>
+<a class="sourceLine" id="cb32-57" title="57">        </a>
+<a class="sourceLine" id="cb32-58" title="58">        <span class="co"># if total_samples == 2:</span></a>
+<a class="sourceLine" id="cb32-59" title="59">        <span class="co">#     for i in range(5):</span></a>
+<a class="sourceLine" id="cb32-60" title="60">        <span class="co">#         plt.savefig(f&quot;{cwd}/images/{image_num:02d}.png&quot;)</span></a>
+<a class="sourceLine" id="cb32-61" title="61">        <span class="co">#         image_num += 1</span></a>
+<a class="sourceLine" id="cb32-62" title="62">        <span class="co"># elif total_samples &gt; 1000000:</span></a>
+<a class="sourceLine" id="cb32-63" title="63">        <span class="co">#     for i in range(5):</span></a>
+<a class="sourceLine" id="cb32-64" title="64">        <span class="co">#         plt.savefig(f&quot;{cwd}/images/{image_num:02d}.png&quot;)</span></a>
+<a class="sourceLine" id="cb32-65" title="65">        <span class="co">#         image_num += 1</span></a>
+<a class="sourceLine" id="cb32-66" title="66">        <span class="co"># else:</span></a>
+<a class="sourceLine" id="cb32-67" title="67">        <span class="co">#     plt.savefig(f&quot;{cwd}/images/{image_num:02d}.png&quot;)</span></a>
+<a class="sourceLine" id="cb32-68" title="68">        <span class="co">#     image_num += 1</span></a>
+<a class="sourceLine" id="cb32-69" title="69">        </a>
+<a class="sourceLine" id="cb32-70" title="70">        plt.show()<span class="op">;</span></a>
+<a class="sourceLine" id="cb32-71" title="71">        </a>
+<a class="sourceLine" id="cb32-72" title="72">        <span class="co"># plt.close()</span></a>
+<a class="sourceLine" id="cb32-73" title="73"></a>
+<a class="sourceLine" id="cb32-74" title="74"><span class="co"># Run below on command line to create movie - needs ffmpeg</span></a>
+<a class="sourceLine" id="cb32-75" title="75"><span class="co"># ffmpeg -framerate 4 -pattern_type glob -i &quot;*.png&quot; output.avi</span></a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_1.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_2.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_3.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_4.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_5.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_6.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_7.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_8.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_9.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_10.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_11.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_12.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_13.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_14.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_15.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_16.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_17.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_18.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_19.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_20.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_21.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_22.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_23.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_24.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_25.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_26.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_27.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_28.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_29.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_30.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_31.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_32.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_33.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_47_34.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+<h2 id="two-y-axes">Two Y Axes</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb33-3" title="3"></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="co"># Create some mock data</span></a>
+<a class="sourceLine" id="cb33-5" title="5">t <span class="op">=</span> np.arange(<span class="fl">0.01</span>, <span class="fl">10.0</span>, <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb33-6" title="6">data1 <span class="op">=</span> np.exp(t)</a>
+<a class="sourceLine" id="cb33-7" title="7">data2 <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> t)</a>
+<a class="sourceLine" id="cb33-8" title="8"></a>
+<a class="sourceLine" id="cb33-9" title="9">fig, ax1 <span class="op">=</span> plt.subplots()</a>
+<a class="sourceLine" id="cb33-10" title="10"></a>
+<a class="sourceLine" id="cb33-11" title="11">color <span class="op">=</span> <span class="st">&#39;tab:red&#39;</span></a>
+<a class="sourceLine" id="cb33-12" title="12">ax1.set_xlabel(<span class="st">&#39;time (s)&#39;</span>)</a>
+<a class="sourceLine" id="cb33-13" title="13">ax1.set_ylabel(<span class="st">&#39;exp&#39;</span>, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb33-14" title="14">ax1.plot(t, data1, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb33-15" title="15">ax1.tick_params(axis<span class="op">=</span><span class="st">&#39;y&#39;</span>, labelcolor<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb33-16" title="16"></a>
+<a class="sourceLine" id="cb33-17" title="17">ax2 <span class="op">=</span> ax1.twinx()  <span class="co"># instantiate a second axes that shares the same x-axis</span></a>
+<a class="sourceLine" id="cb33-18" title="18"></a>
+<a class="sourceLine" id="cb33-19" title="19">color <span class="op">=</span> <span class="st">&#39;tab:blue&#39;</span></a>
+<a class="sourceLine" id="cb33-20" title="20">ax2.set_ylabel(<span class="st">&#39;sin&#39;</span>, color<span class="op">=</span>color)  <span class="co"># we already handled the x-label with ax1</span></a>
+<a class="sourceLine" id="cb33-21" title="21">ax2.plot(t, data2, color<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb33-22" title="22">ax2.tick_params(axis<span class="op">=</span><span class="st">&#39;y&#39;</span>, labelcolor<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb33-23" title="23"></a>
+<a class="sourceLine" id="cb33-24" title="24">fig.tight_layout()  <span class="co"># otherwise the right y-label is slightly clipped</span></a>
+<a class="sourceLine" id="cb33-25" title="25">plt.show()</a></code></pre></div>
+<h1 id="binomial-variables">Binomial Variables</h1>
+<h2 id="rules-binomial-variables">Rules Binomial Variables</h2>
+<ol type="1">
+<li>Comprised Of Independent Trials</li>
+<li>Each Trial Can Be Regarded As A Success Or Failure</li>
+<li>There Are A FIXED Number Of Trials</li>
+<li>Probability Of Success On Each Trial Is Constant (i.e. Rule 1 Repeats)</li>
+</ol>
+<p><strong><em>NOTE:</em></strong> Use The 10% Rule For Approximate Independence Of Trials When Resampling Is Not Possible</p>
+<h1 id="binomial-combinametrics">Binomial Combinametrics</h1>
+<p><br /><span class="math display">$$ p(k \; of \; n) = \left( \begin{matrix} n \\ k \end{matrix} \right) p^k (1-p)^{n-k} $$</span><br /> <br></p>
+<p><br /><span class="math display">$$ \binom {n}{k}=\frac {n!}{k!(n-k)!} $$</span><br /> <br></p>
+<p><br /><span class="math display">$$ \left(\!\!{n \choose k}\!\!\right)={n+k-1 \choose k}={\frac {(n+k-1)!}{k!\,(n-1)!}}={n(n+1)(n+2)\cdots (n+k-1) \over k!}, $$</span><br /> <br></p>
+<p><br /><span class="math display">$$ p(k \; of \; n) = \frac{n!}{k!(n-k)!} p^k (1-p)^{n-k} $$</span><br /> <br></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="co"># Independent Trials Success Probability = 0.73</span></a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="im">import</span> math</a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb34-4" title="4"></a>
+<a class="sourceLine" id="cb34-5" title="5">fact <span class="op">=</span> math.factorial</a>
+<a class="sourceLine" id="cb34-6" title="6"></a>
+<a class="sourceLine" id="cb34-7" title="7">Ps <span class="op">=</span> <span class="fl">0.73</span></a>
+<a class="sourceLine" id="cb34-8" title="8">p_D <span class="op">=</span> {}</a>
+<a class="sourceLine" id="cb34-9" title="9">n <span class="op">=</span> <span class="dv">7</span></a>
+<a class="sourceLine" id="cb34-10" title="10"><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(n<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb34-11" title="11">    nCk <span class="op">=</span> fact(n) <span class="op">/</span> (fact(k) <span class="op">*</span> fact(n<span class="op">-</span>k))</a>
+<a class="sourceLine" id="cb34-12" title="12">    p <span class="op">=</span> nCk <span class="op">*</span> Ps<span class="op">**</span>k <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> Ps)<span class="op">**</span>(n <span class="op">-</span> k)</a>
+<a class="sourceLine" id="cb34-13" title="13">    p_D[k] <span class="op">=</span> <span class="bu">round</span>(p, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb34-14" title="14"></a>
+<a class="sourceLine" id="cb34-15" title="15">plt.bar(p_D.keys(), p_D.values())</a>
+<a class="sourceLine" id="cb34-16" title="16">plt.show()</a></code></pre></div>
+<figure>
+<img src="Statistics_with_Python_files/Statistics_with_Python_53_0.png" alt="png" /><figcaption>png</figcaption>
+</figure>
+</body>
+</html>
